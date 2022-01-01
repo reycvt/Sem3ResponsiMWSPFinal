@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pilih_prodi">
+        <item>Informatika</item>
+        <item>Sistem Informasi</item>
+    </string-array>
+</resources>
