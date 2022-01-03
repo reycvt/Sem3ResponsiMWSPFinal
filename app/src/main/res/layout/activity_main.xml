@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="Tambah Peserta"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvWebinar"
         android:layout_width="match_parent"

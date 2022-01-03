@@ -6,32 +6,46 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import com.example.restapimwsp.api.response.ApiConfig
-import com.example.restapimwsp.api.response.Inresponse.DataItem
 import com.example.restapimwsp.api.response.Inresponse.InStatustResponse
 import com.example.restapimwsp.api.response.Inresponse.ParticipantResponse
+import com.example.restapimwsp.api.response.Inresponse.UpdateResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.crypto.spec.DESKeySpec
 
-class MainInsertData : AppCompatActivity() {
+class MainActivityUpdateData : AppCompatActivity() {
+    private val mainAdapter = MainAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main_insert_data)
+        setContentView(R.layout.activity_main_update_data)
         val iNim= findViewById<EditText>(R.id.Enim)
         val iNama= findViewById<EditText>(R.id.Enama)
         val iprodi = findViewById<Spinner>(R.id.sp_prodi)
         val iGender =findViewById<RadioGroup>(R.id.inGender)
         val btnsmbt= findViewById<Button>(R.id.btnsubmit)
 
+//putextra
+        var nim = intent.getStringExtra("Key_Nim")
+        var name = intent.getStringExtra("Key_Nama")
+        var prodi = intent.getStringExtra("Key_Kampus")
+        var gender = intent.getStringExtra("Key_Gender")
+
+
+        iNim.setText(nim)
+        iNama.setText(name)
+
+
         btnsmbt.setOnClickListener {
+
             var nim = iNim.text.toString()
             var nama = iNama.text.toString()
             var prodi =iprodi.selectedItem.toString()
             var intSelectGender : Int =iGender.checkedRadioButtonId
             var rbGender = findViewById<RadioButton>(intSelectGender)
             var gender = rbGender.text.toString()
-            insertData(
+
+            updateData(
+//                id=5,
                 nim = nim,
                 nama = nama,
                 jenisKelamin = gender,
@@ -47,24 +61,40 @@ class MainInsertData : AppCompatActivity() {
 
     }
 
-//    public data class data
 
-    private fun insertData(
+    private fun getData(){
+        val client = ApiConfig.getService().getWebinar()
+        client.enqueue(object : Callback<ParticipantResponse>{
+            override fun onResponse(
+                call: Call<ParticipantResponse>,
+                response: Response<ParticipantResponse>
+            ) {
+                Log.e(MainActivity.TAG, response.body().toString())
+                mainAdapter.setData(response.body()!!.data)
+            }
+
+            override fun onFailure(call: Call<ParticipantResponse>, t: Throwable) {
+                Log.e(MainActivity.TAG, "onFailure: ${t.message}")
+            }
+        })
+    }
+    private fun updateData(
+//        id : Int,
         nim: String,
         nama: String,
         jenisKelamin: String,
         prodi: String
     ){
-        val client = ApiConfig.getService().insertWebinar(nim,nama,jenisKelamin,prodi)
-        client.enqueue(object : Callback<InStatustResponse> {
+        val client = ApiConfig.getService().updateWebinar(nim,nama,jenisKelamin,prodi)
+        client.enqueue(object : Callback<UpdateResponse> {
             override fun onResponse(
-                call: Call<InStatustResponse>,
-                response: Response<InStatustResponse>
+                call: Call<UpdateResponse>,
+                response: Response<UpdateResponse>
             ) {
                 Log.e(MainActivity.TAG, response.body().toString())
             }
 
-            override fun onFailure(call: Call<InStatustResponse>, t: Throwable) {
+            override fun onFailure(call: Call<UpdateResponse>, t: Throwable) {
                 Log.e(MainActivity.TAG, "onFailure: ${t.message}")
             }
         })

@@ -3,13 +3,11 @@ package com.example.restapimwsp.api.response
 
 import com.example.restapimwsp.api.response.Inresponse.InStatustResponse
 import com.example.restapimwsp.api.response.Inresponse.ParticipantResponse
+import com.example.restapimwsp.api.response.Inresponse.UpdateResponse
 
 //import dari library retrofit
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
     @GET("read.php")
@@ -23,4 +21,20 @@ interface ApiService {
         @Field("jenis_kelamin") jenisKelamin: String,
         @Field("prodi") prodi: String,
     ): Call<InStatustResponse>
+
+    @FormUrlEncoded
+    @POST("update.php")
+    fun updateWebinar(
+//        @Path("id") id : Int,
+        @Field("nim") nim: String,
+        @Field("nama") nama: String?,
+        @Field("jenis_kelamin") jenisKelamin: String?,
+        @Field("prodi") prodi: String?,
+    ): Call<UpdateResponse>
+
+    @GET("delete.php")
+    fun deleteWebinar(
+        @Query("nim")nim: String
+    ): Call<ParticipantResponse>
+
 }
