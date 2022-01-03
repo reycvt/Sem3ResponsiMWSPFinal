@@ -16,10 +16,10 @@
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup,UnusedAttribute">
         <activity
-            android:name=".MainActivityUpdateData"
+            android:name=".UpdateDataActivity"
             android:exported="false" />
         <activity
-            android:name=".MainInsertData"
+            android:name=".InsertDataActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

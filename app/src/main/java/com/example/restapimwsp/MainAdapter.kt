@@ -7,13 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.restapimwsp.MainActivity.Companion.TAG
 import com.example.restapimwsp.api.response.ApiConfig
 import com.example.restapimwsp.api.response.Inresponse.DataItem
-import com.example.restapimwsp.api.response.Inresponse.Item
 import com.example.restapimwsp.api.response.Inresponse.ParticipantResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,16 +18,12 @@ import retrofit2.Response
 
 class MainAdapter : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
 
-//    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-//
-//    }
-
 private var data: ArrayList<DataItem> = arrayListOf()
 
     fun setData(data: List<DataItem>){
         this.data.clear()
         this.data.addAll(data)
-        notifyDataSetChanged()
+        this.notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -43,8 +36,6 @@ private var data: ArrayList<DataItem> = arrayListOf()
         val btndelete = itemView.findViewById<Button>(R.id.btndelete)
 
     }
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater
@@ -59,9 +50,10 @@ private var data: ArrayList<DataItem> = arrayListOf()
         holder.tvName.text = itemData.nama
         holder.tvProdi.text = itemData.prodi
         holder.tvJenisKelamin.text = itemData.jenisKelamin
+//        Action on button update
         holder.btnupdate.setOnClickListener {
             val context=holder.itemView.context
-            val intent = Intent( context, MainActivityUpdateData::class.java)
+            val intent = Intent( context, UpdateDataActivity::class.java)
             intent.putExtra("Key_Id", holder.tvID.text.toString().toInt())
             intent.putExtra("Key_Nim", holder.tvNim.text.toString())
             intent.putExtra("Key_Nama", holder.tvName.text.toString())
@@ -69,6 +61,7 @@ private var data: ArrayList<DataItem> = arrayListOf()
 //            intent.putExtra("Key_Gender", holder.tvJenisKelamin.text)
             context.startActivity(intent)
         }
+//        Action on button delete
         holder.btndelete.setOnClickListener {
             val nim = holder.tvNim.text.toString()
             ApiConfig.getService().deleteWebinar(nim = nim).enqueue(object : Callback<ParticipantResponse>{
@@ -89,19 +82,7 @@ private var data: ArrayList<DataItem> = arrayListOf()
             val intent = Intent( context, MainActivity::class.java)
             context.startActivity(intent)
         }
-
-//        val context=holder.itemView.context
-//        val intent = Intent( context, MainActivityUpdateData::class.java)
-//        intent.putExtra("Key_Nim", holder.tvNim.text.toString())
-//        intent.putExtra("Key_Nama", holder.tvName.text)
-//        intent.putExtra("Key_Kampus", holder.tvProdi.text)
-//        intent.putExtra("Key_Gender", holder.tvJenisKelamin.text)
-//        context.startActivity(intent)
-
     }
-
-
-
     override fun getItemCount(): Int {
         return this.data.size
     }
